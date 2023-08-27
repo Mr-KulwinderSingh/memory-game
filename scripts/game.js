@@ -10,15 +10,30 @@ function newGame() {
     game.score = 0;
     game.currentGame = [];
     game.playerMoves = [];
-    showScore()
+    showScore();
+    addTurn();
 
 }
 
-function showScore () {
+function addTurn() {
+    game.playerMoves = [];
+    game.currentGame.push(game.choices[(Math.floor(Math.random() * 4))]);
+    //showTurns();
+}
+
+function lightsOn(circ) {
+    document.getElementById(circ).classList.add(circ + "light");
+    setTimeout(function () {
+        document.getElementById(circ).classList.remove(circ + "light");
+    }, 400);
+}
+
+function showScore() {
     document.getElementById("score").innerText = game.score;
 }
 
-module.exports = { game, newGame, showScore}
+module.exports = { game, newGame, showScore, addTurn, lightsOn}
+
 
 
 

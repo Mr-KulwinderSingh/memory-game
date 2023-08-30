@@ -14,13 +14,15 @@ function newGame() {
     for (let circle of document.getElementsByClassName("circle")) {
         if (circle.getAttribute("data-listener") !== "true") {
             circle.addEventListener("click", (e) => {
-            let move = e.target.getAttribute("id");
-            lightsOn(move);
-            game.playerMoves.push(move);
-            playerTurn();
-
-        });
-        circle.setAttribute("data-listener", "true");
+                if (game.currentGame.length > 0) {
+                    let move = e.target.getAttribute("id");
+                    game.lastButton = move;
+                    lightsOn(move);
+                    game.playerMoves.push(move);
+                    playerTurn();
+                }
+            });
+            circle.setAttribute("data-listener", "true");
         }
 
     }
@@ -48,7 +50,7 @@ function showScore() {
 
 function showTurns() {
     game.turnNumber = 0;
-    let turns = setInterval (() => {
+    let turns = setInterval(() => {
         lightsOn(game.currentGame[game.turnNumber]);
         game.turnNumber++;
         if (game.turnNumber >= game.currentGame.length) {
@@ -58,7 +60,24 @@ function showTurns() {
 
 }
 
-module.exports = { game, newGame, showScore, addTurn, lightsOn, showTurns}
+function playerTurn() {
+    let i = game.playerMoves.length - 1;
+    if (game.currentGame[i] === game.playerMoves[i]) {
+        if (game.currentGame.length == game.playerMoves.length) {
+            game.score++;
+            showScore();
+            addTurn();
+        }
+    } else {
+        alert("Wrong move!");
+        newGame();
+    }
+}
+
+
+
+
+module.exports = { game, newGame, showScore, addTurn, lightsOn, showTurns, playerTurn }
 
 
 
